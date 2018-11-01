@@ -1,0 +1,11 @@
+ID,Label,size,age,
+1,Juan,1.76,47
+2,Mario,1.80,35
+3,Esteban,1.65,24
+4,Luisa,1.62,43
+#
+Source,Target,relationship
+1,2,Hermano
+3,4,Esposo
+1,4,Primo
+2,4,Primo
