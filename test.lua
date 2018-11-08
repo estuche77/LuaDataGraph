@@ -28,6 +28,6 @@ printVertex(b)
 print("\n")
 
 -- Testing TGF file reading
-graph = readTFG('samples/data.tgf')
+local graph = readTFG('samples/data.tgf')
 printVertex(graph['1'])
 printVertex(graph['1'], {'Label','size','age'})

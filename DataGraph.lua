@@ -92,6 +92,7 @@ function readTFG(file)
   local vertex = {}
   i = i + 1
   line = lines[i]
+  -- until finds '#' or no line
   while line ~= nil and string.sub(line, 1, 1) ~= "#" do
     -- parse the line
     local data = ParseCSVLine(line)
