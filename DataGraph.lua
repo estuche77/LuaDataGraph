@@ -1,3 +1,5 @@
+require "ReadFile"
+
 local write = io.write
 
 local DataGraph = {}
@@ -76,4 +78,61 @@ end
 function printVertex(vdx,fields)
   graph.resetMark()
   _printVertex(vdx,fields)
+end
+
+-- reads tfg file format
+function readTFG(file)
+  local lines = lines_from(file)
+
+  i = 1
+  line = lines[i]
+
+  atributes = ParseCSVLine(line)
+
+  i = i + 1
+  line = lines[i]
+
+  vertexs = {}
+
+  while line ~= nil and string.sub(line, 1, 1) ~= "#" do
+
+    data = ParseCSVLine(line)
+    id = data[1]
+    fields = {}
+
+    for j, atribute in pairs(atributes) do
+      table.insert(fields, data[j])
+    end
+
+    vertexs[id] = addVertex(id, fields)
+
+    i = i + 1
+    line = lines[i]
+  end
+
+  i = i + 1
+  line = lines[i]
+
+  atributes = ParseCSVLine(line)
+
+  i = i + 1
+  line = lines[i]
+
+  edges = {}
+
+  while line ~= nil do
+
+    data = ParseCSVLine(line)
+    vertex1 = data[1]
+    vertex2 = data[2]
+    weight = data[3]
+    
+    addEdge(vertexs[vertex1], vertexs[vertex2], weight)
+
+    i = i + 1
+    line = lines[i]
+  end
+
+  return vertexs
+
 end
