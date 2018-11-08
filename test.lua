@@ -25,3 +25,9 @@ addEdge(e,f,'60')
 printVertex(a,{'cost','label'})
 print("\n")
 printVertex(b)
+print("\n")
+
+-- Testing TGF file reading
+graph = readTFG('samples/data.tgf')
+printVertex(graph['1'])
+printVertex(graph['1'], {'Label','size','age'})
