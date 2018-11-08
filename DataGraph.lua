@@ -83,56 +83,47 @@ end
 -- reads custom TFG file format
 function readTFG(file)
   local lines = lines_from(file)
-
+  -- i represents the i-th line from file
   local i = 1
   local line = lines[i]
-
+  -- read headers atributes for vertex
   local atributes = ParseCSVLine(line)
-
+  -- store each vertex
+  local vertex = {}
   i = i + 1
   line = lines[i]
-
-  local vertex = {}
-
   while line ~= nil and string.sub(line, 1, 1) ~= "#" do
-
+    -- parse the line
     local data = ParseCSVLine(line)
     local id = data[1]
+    -- fetch atributes
     local fields = {}
-
     for j, atribute in pairs(atributes) do
       fields[atribute] = data[j]
     end
-
+    -- adds the vertex with its name as index
     vertex[id] = graph.addVertex(id, fields)
-
     i = i + 1
     line = lines[i]
   end
-
+  -- (CAN'T STORE EDGES ATRIBUTES YET)
+  -- reads headers for edges
   i = i + 1
-  line = lines[i]
-
-  atributes = ParseCSVLine(line)
-
-  i = i + 1
-  line = lines[i]
-
+  -- line = lines[i]
+  -- atributes = ParseCSVLine(line)
   local edges = {}
-
+  i = i + 1
+  line = lines[i]
   while line ~= nil do
-
+    -- parse the line
     data = ParseCSVLine(line)
     local vertex1 = data[1]
     local vertex2 = data[2]
     local weight = data[3]
-    
+    -- adds a new edge
     graph.addEdge(vertex[vertex1], vertex[vertex2], weight)
-
     i = i + 1
     line = lines[i]
   end
-
   return vertex
-
 end
