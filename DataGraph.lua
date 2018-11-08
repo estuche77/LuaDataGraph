@@ -80,31 +80,31 @@ function printVertex(vdx,fields)
   _printVertex(vdx,fields)
 end
 
--- reads tfg file format
+-- reads custom TFG file format
 function readTFG(file)
   local lines = lines_from(file)
 
-  i = 1
-  line = lines[i]
+  local i = 1
+  local line = lines[i]
 
-  atributes = ParseCSVLine(line)
+  local atributes = ParseCSVLine(line)
 
   i = i + 1
   line = lines[i]
 
-  vertexs = {}
+  local vertex = {}
 
   while line ~= nil and string.sub(line, 1, 1) ~= "#" do
 
-    data = ParseCSVLine(line)
-    id = data[1]
-    fields = {}
+    local data = ParseCSVLine(line)
+    local id = data[1]
+    local fields = {}
 
     for j, atribute in pairs(atributes) do
-      table.insert(fields, data[j])
+      fields[atribute] = data[j]
     end
 
-    vertexs[id] = addVertex(id, fields)
+    vertex[id] = graph.addVertex(id, fields)
 
     i = i + 1
     line = lines[i]
@@ -118,21 +118,21 @@ function readTFG(file)
   i = i + 1
   line = lines[i]
 
-  edges = {}
+  local edges = {}
 
   while line ~= nil do
 
     data = ParseCSVLine(line)
-    vertex1 = data[1]
-    vertex2 = data[2]
-    weight = data[3]
+    local vertex1 = data[1]
+    local vertex2 = data[2]
+    local weight = data[3]
     
-    addEdge(vertexs[vertex1], vertexs[vertex2], weight)
+    graph.addEdge(vertex[vertex1], vertex[vertex2], weight)
 
     i = i + 1
     line = lines[i]
   end
 
-  return vertexs
+  return vertex
 
 end
