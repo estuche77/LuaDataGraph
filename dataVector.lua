@@ -1,7 +1,7 @@
-function vector(args)
-  local table = args or {}
+function vector(id)
+  local table = {}
   local _table = table
-  table = {}
+  table = {oid=id}
   local metatable = {
     __newindex = function(table,k,v)
       _table[k] = v
@@ -20,6 +20,7 @@ end
 c = function(args) return vector(args) end
 
 function printVector(vct)
+  print("oid:",vct.oid)
   for i = 1,vct.size() do
     print(i..":"..tostring(vct[i]))
   end

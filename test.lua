@@ -8,7 +8,7 @@ A->B,A->C,B->D,C->D,D->E,E-F,
 
 --]]
 
-local g = dataGraph()
+local g = dataGraph("Test")
 
 a = g.addVertex('A',{cost=10,label="First Vertex"})
 b = g.addVertex('B',{cost=20,label="Second Vertex"})

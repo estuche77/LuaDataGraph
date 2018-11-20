@@ -2,9 +2,11 @@ local write = io.write
 require "dataVector"
 require "CSV"
 
-function dataGraph()
-  local table = {vertex=vector(),edge=vector(),first=vector(),
-    last=vector(),next=vector(),adjacent=vector(),mark=vector()}
+function dataGraph(id)
+  local oid = id or ""
+  local table = {vertex=vector('vrt'..oid),edge=vector('edg'..oid),
+    first=vector('frs'..oid),last=vector('lst..'..oid),next=vector('nxt'..oid),
+    adjacent=vector('adj'..oid),mark=vector('mrk'..oid),oid=oid}
   table.addVertex = function(label,fields)
     local n = table.vertex.size() + 1
     table.vertex[n] = label
@@ -66,5 +68,6 @@ end
 
 function printDataGraph(graph,fields)
   graph.resetMark()
+  print("oid:",graph.oid)
   printVertex(graph,1,fields)
 end
