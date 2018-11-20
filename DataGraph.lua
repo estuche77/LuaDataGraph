@@ -3,10 +3,10 @@ require "dataVector"
 require "CSV"
 
 function dataGraph()
-  local table = {vertex={},edge={},first={},
-    last={},next={},adjacent={},mark={}}
+  local table = {vertex=vector(),edge=vector(),first=vector(),
+    last=vector(),next=vector(),adjacent=vector(),mark=vector()}
   table.addVertex = function(label,fields)
-    local n = #table.vertex + 1
+    local n = table.vertex.size() + 1
     table.vertex[n] = label
     table.first[n] = 0
     table.last[n] = 0
@@ -21,7 +21,7 @@ function dataGraph()
     return n
   end
   table.addEdge = function(vdx1,vdx2,label,fields)
-    local m = #table.edge + 1
+    local m = table.edge.size() + 1
     table.next[m] = 0
     table.edge[m] = label
     table.adjacent[m] = vdx2
