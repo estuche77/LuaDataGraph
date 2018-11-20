@@ -1,5 +1,6 @@
-function vector(id)
-  local table = {}
+function vector(arg1,arg2)
+  local id = (type(arg1) == "table") and "" or arg1
+  local table = (id == "") and arg1 or arg2 or {}
   local _table = table
   table = {oid=id}
   local metatable = {
