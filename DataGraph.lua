@@ -1,9 +1,10 @@
 local write = io.write
+require "dataVector"
+require "CSV"
 
-local DataGraph = {}
-
-DataGraph = function()
-  local table = {vertex={},edge={},first={},last={},next={},adjacent={},mark={}}
+function dataGraph()
+  local table = {vertex={},edge={},first={},
+    last={},next={},adjacent={},mark={}}
   table.addVertex = function(label,fields)
     local n = #table.vertex + 1
     table.vertex[n] = label
@@ -19,7 +20,7 @@ DataGraph = function()
     end
     return n
   end
-  table.addEdge = function(vdx1,vdx2,label)
+  table.addEdge = function(vdx1,vdx2,label,fields)
     local m = #table.edge + 1
     table.next[m] = 0
     table.edge[m] = label
@@ -40,17 +41,7 @@ DataGraph = function()
   return table
 end
 
-local graph = DataGraph()
-
-function addVertex(label,fields)
-  return graph.addVertex(label,fields)
-end
-
-function addEdge(v1,v2,label)
-  return graph.addEdge(v1,v2,label)
-end
-
-local function _printVertex(vdx,fields)
+local function printVertex(graph,vdx,fields)
   if graph.mark[vdx] then
     return
   end
@@ -68,12 +59,12 @@ local function _printVertex(vdx,fields)
   local adjacent = nil
   while index ~= 0 do
     adjacent = graph.adjacent[index]
-    _printVertex(adjacent,fields)
+    printVertex(graph,adjacent,fields)
     index = graph.next[index]
   end
 end
 
-function printVertex(vdx,fields)
+function printDataGraph(graph,fields)
   graph.resetMark()
-  _printVertex(vdx,fields)
+  printVertex(graph,1,fields)
 end
