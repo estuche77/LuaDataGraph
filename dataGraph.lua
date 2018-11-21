@@ -45,6 +45,14 @@ function dataGraph(id)
       table.next[table.last[vdx1]] = m
     end
     table.last[vdx1] = m
+    if fields then
+      for k,v in pairs(fields) do
+        if table[k] == nil then
+          table[k] = vector(table.oid..tostring(k))
+        end
+        table[k][m] = v
+      end
+    end
     return m
   end
   table.resetMark = function()
@@ -56,31 +64,32 @@ function dataGraph(id)
   return table
 end
 
-local function printVertex(graph,vdx,fields)
-  if graph.mark[vdx] then
-    return
-  end
-  write(graph.vertex[vdx]..' ')
-  if fields then
-    for i=1,#fields do
-      if graph[fields[i]][vdx] then
-        write(graph[fields[i]][vdx]..' ')
+function printDataGraph(graph,fields1,fields2)
+  write("oid: "..graph.oid..'\n')
+  for vtx=1,graph.vertex.size() do
+    write(graph.vertex[vtx]..' ')
+    if fields1 then
+      for i=1,#fields1 do
+        if graph[fields1[i]][vtx] then
+          write(graph[fields1[i]][vtx]..' ')
+        end
       end
     end
+    write('\n')
+    local index = graph.first[vtx]
+    local adj = nil
+    while index ~= 0 do
+      adj = graph.adjacent[index]
+      write(graph.edge[adj]..' ')
+      if fields2 then
+        for i=1,#fields2 do
+          if graph[fields1[i]][adj] then
+            write(graph[fields2[i]][adj]..' ')
+          end
+        end
+      end
+      index = graph.next[index]
+      write('\n')
+    end
   end
-  write('\n')
-  graph.mark[vdx] = true
-  local index = graph.first[vdx]
-  local adjacent = nil
-  while index ~= 0 do
-    adjacent = graph.adjacent[index]
-    printVertex(graph,adjacent,fields)
-    index = graph.next[index]
-  end
-end
-
-function printDataGraph(graph,fields)
-  graph.resetMark()
-  print("oid:",graph.oid)
-  printVertex(graph,1,fields)
 end
