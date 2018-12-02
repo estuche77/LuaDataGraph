@@ -34,6 +34,20 @@ function dataGraph(id)
     end
     return n
   end
+  table.addFields = function(fields)
+    local n = table.vertex.size()
+    if fields then
+      for i=1,n do
+        for k,v in pairs(fields) do
+          if table[k] == nil then
+            table[k] = vector(table.oid..tostring(k))
+          end
+          table[k][i] = v
+        end
+      end
+    end
+    return n
+  end
   table.addEdge = function(vdx1,vdx2,label,fields)
     local m = table.edge.size() + 1
     table.next[m] = 0
@@ -92,4 +106,62 @@ function printDataGraph(graph,fields1,fields2)
       write('\n')
     end
   end
+end
+
+-- reads custom TFG file format
+function readTFG(file, name)
+  -- initialize graph
+  local graph = dataGraph(name)
+  -- reads lines
+  local lines = lines_from(file)
+  -- i represents the i-th line from file
+  local i = 1
+  local line = lines[i]
+  -- read headers atributes for vertex
+  local atributes = ParseCSVLine(line)
+  -- store each vertex
+  local vertex = {}
+  i = i + 1
+  line = lines[i]
+  -- until finds '#' or no line
+  while line ~= nil and string.sub(line, 1, 1) ~= "#" do
+    -- parse the line
+    local data = ParseCSVLine(line)
+    local id = data[1]
+    -- fetch atributes
+    local fields = {}
+    for j, atribute in pairs(atributes) do
+      fields[atribute] = data[j]
+    end
+    -- adds the vertex with its name as index
+    vertex[id] = graph.addVertex(id, fields)
+    i = i + 1
+    line = lines[i]
+  end
+  i = i + 1
+  line = lines[i]
+  -- reads headers for edges
+  atributes = ParseCSVLine(line)
+  i = i + 1
+  line = lines[i]
+  while line ~= nil do
+    -- parse the line
+    data = ParseCSVLine(line)
+    local vertex1 = data[1]
+    local vertex2 = data[2]
+    local name = data[3]
+    -- fetch atributes
+    local fields = {}
+    for j, atribute in pairs(atributes) do
+      fields[atribute] = data[j]
+    end
+    -- adds a new edge with fields if it has them
+    if #atributes == 0 then graph.addEdge(vertex[vertex1], vertex[vertex2], name)
+    else graph.addEdge(vertex[vertex1], vertex[vertex2], name, fields) end
+    -- next line
+    i = i + 1
+    line = lines[i]
+  end
+  -- end
+  return graph
 end

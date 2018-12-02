@@ -8,26 +8,26 @@ A->B,A->C,B->D,C->D,D->E,E-F,
 
 --]]
 
-a = addVertex('A',{cost=10,label="First Vertex"})
-b = addVertex('B',{cost=20,label="Second Vertex"})
-c = addVertex('C',{cost=10,label="Third Vertex"})
-d = addVertex('D',{cost=30,label="Fourth Vertex"})
-e = addVertex('E',{cost=10,label="Fifth Vertex"})
-f = addVertex('F',{cost=50,label="Sixth Vertex"})
+g = dataGraph("Test")
 
-addEdge(a,b,'10')
-addEdge(a,c,'20')
-addEdge(b,d,'30')
-addEdge(c,d,'40')
-addEdge(d,e,'50')
-addEdge(e,f,'60')
+a = g.addVertex('A',{cost=10,label="First Vertex"})
+b = g.addVertex('B',{cost=20,label="Second Vertex"})
+c = g.addVertex('C',{cost=10,label="Third Vertex"})
+d = g.addVertex('D',{cost=30,label="Fourth Vertex"})
+e = g.addVertex('E',{cost=10,label="Fifth Vertex"})
+f = g.addVertex('F',{cost=50,label="Sixth Vertex"})
 
-printVertex(a,{'cost','label'})
-print("\n")
-printVertex(b)
+g.addEdge(a,b,'10',{cost=20})
+g.addEdge(a,c,'20',{cost=20})
+g.addEdge(b,d,'30',{cost=20})
+g.addEdge(c,d,'40',{cost=20})
+g.addEdge(d,e,'50',{cost=20})
+g.addEdge(e,f,'60',{cost=20})
+
+printDataGraph(g, {'cost','label'}, {'cost'})
 print("\n")
 
 -- Testing TGF file reading
-local graph = readTFG('samples/data.tgf')
-printVertex(graph['1'])
-printVertex(graph['1'], {'Label','size','age'})
+local graph = readTFG('samples/data.tgf', 'TEST')
+printDataGraph(graph)
+printDataGraph(graph, {'Label','size','age'}, {'weight'})
